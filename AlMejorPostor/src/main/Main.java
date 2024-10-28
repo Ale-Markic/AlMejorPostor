@@ -19,10 +19,22 @@ public class Main {
 		GestorDeArchivos gestorArchivos = new GestorDeArchivos();
 		gestorArchivos.inicializarArchivo();
 		
-		Oferta oferta = new Oferta("Alejandro", 7, 8, 13000);
+		//Oferta oferta = new Oferta("Alejandro", 7, 8, 13000);
 		
-		gestorArchivos.guardarOferta(oferta);
+		//gestorArchivos.guardarOferta(oferta);
 		gestorArchivos.mostrarOfertas();
+		
+		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		
+		gestorArchivos.eliminarOferta("Alejandro");
+		gestorArchivos.mostrarOfertas();
+		
+		
+		
 	}
 
 }

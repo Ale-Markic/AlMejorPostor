@@ -73,15 +73,35 @@ public class GestorDeArchivos {
 	 */
 	public void mostrarOfertas() {
 		List<Oferta> ofertas = cargarOfertas();
+
 		if(ofertas.isEmpty()) {
 			System.out.println("No hay ofertas registradas");
 			System.out.println("acá me gustaria que aparezca un mensaje en la pantalla que diga que no hay ofertas");
 		}else {
-			for(Oferta oferta : ofertas) {
-				System.out.println(oferta);
-			}
-			System.out.println("Acá tambien deberia mostrar las ofertas por pantalla");
+			String jsonFormateado = gson.toJson(ofertas);
+			System.out.println(jsonFormateado);
 		}
+	}
+	
+	/**
+	 * Metodo para eliminar las ofertas de una persona.
+	 * 
+	 * ES IMPORTANTE REMARCAR QUE SE ELIMINAN TODAS LAS OFERTAS QUE ESTAN ASOCIADAS AL NOMBRE QUE SE PASA POR PARAMETRO
+	 * @param nombreOferente
+	 */
+	public void eliminarOferta(String nombreOferente) {
+		List<Oferta> ofertas = cargarOfertas();
+		
+		ofertas.removeIf(oferta -> oferta.getNombreOferente().equals(nombreOferente));
+		
+		// Guardamos la lista actualizada en el archivo JSON
+	    try (Writer writer = new FileWriter(ARCHIVO_JSON)) {
+	        gson.toJson(ofertas, writer);
+	        System.out.println("Oferta eliminada exitosamente.");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		
 	}
 
 }
