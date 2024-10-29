@@ -9,14 +9,28 @@ public class Oferta {
 	
 	
 	public Oferta(String nombreOferente, int horaInicio, int horaFin, int monto) {
-		chequearLegalidadDeOferta(horaInicio, horaFin, monto);
+		chequearLegalidadDeOferta(nombreOferente, horaInicio, horaFin, monto);
 		this.monto = convertirIntABigDecimal(monto);
 		this.nombreOferente = nombreOferente;
 		this.horaFin = horaFin;
 		this.horaInicio = horaInicio;
 	}
 	
-	private void chequearLegalidadDeOferta(int horaInicio, int horaFin, int monto) {
+	private void chequearLegalidadDeOferta(String nombreOferente, int horaInicio, int horaFin, int monto) {
+		chequeoNombre(nombreOferente);
+		chequeoHorarios(horaInicio, horaFin);
+		chequeoMonto(monto);
+	}
+	
+	private void chequeoNombre(String nombreOferente) {
+		if (nombreOferente.isEmpty()) {
+			throw new RuntimeException("Por favor ingrese un nombre");
+		}
+	}
+	private void chequeoHorarios(int horaInicio, int horaFin) {
+		if(horaInicio == horaFin) {
+			throw new RuntimeException("los horarios no pueden ser iguales");
+		}
 		if(horaInicio > horaFin) {
 			throw new RuntimeException("No puede viajar al pasado, la hora de fin tiene que ser posterior a la hora de comienzo");
 		}
@@ -26,13 +40,17 @@ public class Oferta {
 		if(horaInicio > 24 || horaFin > 24) {
 			throw new RuntimeException("el día solo tiene 24 horas");
 		}
+	}
+	
+	private void chequeoMonto(int monto) {
 		if(monto < 0) {
 			throw new RuntimeException("por favor ingrese un monto con valor positivo");
 		}
+		
+		if(monto == 0) {
+			throw new RuntimeException("El monto ingresado no puede ser 0, necesitamos ganancia!!");
+		}
 	}
-	
-	
-	
 	
 	private BigDecimal convertirIntABigDecimal(int monto) {
 		return BigDecimal.valueOf(monto);
