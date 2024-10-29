@@ -65,7 +65,6 @@ public class OfertaTest {
 	public void ingresoHoraFinLimiteBajo() {
 		//Este test claramente es de redundancia, hay muchas barreras que deberia detectar este error. Pero igual del usuario lo puede ingresar
 		Oferta oferta = new Oferta("Alejandro" , 0, 0, 15000);
-		
 	}
 	
 	@Test(expected = RuntimeException.class)
@@ -77,9 +76,7 @@ public class OfertaTest {
 	@Test
 	public void ingresoHoraFinLimiteAlto() {
 		Oferta oferta = new Oferta("Alejandro", 3, 24, 15000);
-		assertNotNull("la oferta se creó exitosamente", oferta);
 		
+		assertNotNull("la oferta se creó exitosamente", oferta);	
 	}
-	
-
 }

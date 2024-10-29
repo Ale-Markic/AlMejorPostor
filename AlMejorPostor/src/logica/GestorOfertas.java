@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class GestorOfertas {
 	
-	List<Oferta> ofertas;
+	private List<Oferta> ofertas;
 	
 
 }

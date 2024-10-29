@@ -3,9 +3,9 @@ package logica;
 import java.math.BigDecimal;
 
 public class Oferta {
-	String nombreOferente;
-	int horaInicio, horaFin;
-	BigDecimal monto;
+	private String nombreOferente;
+	private int horaInicio, horaFin;
+	private BigDecimal monto;
 	
 	
 	public Oferta(String nombreOferente, int horaInicio, int horaFin, int monto) {
