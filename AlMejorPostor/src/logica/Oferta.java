@@ -57,6 +57,24 @@ public class Oferta {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		if(!(obj instanceof Oferta)) {
+			return false;
+		}
+		Oferta aux = (Oferta) obj;
+		boolean igualdad = aux.getNombreOferente() == this.getNombreOferente() 
+				&& aux.getHoraInicio() == this.getHoraInicio() 
+				&& aux.getHoraFin() == this.getHoraFin() 
+				&& aux.getMonto() == this.getMonto();
+		
+		
+		return igualdad;
+	}
+	
+	@Override
 	public String toString() {
 		StringBuilder mensaje = new StringBuilder();
 		

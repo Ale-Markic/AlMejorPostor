@@ -37,8 +37,8 @@ public class GestorDeArchivos {
 	 * guarda la nueva oferta en el archivo JSON
 	 * @param nuevaOferta
 	 */
-	public void guardarOferta(Oferta nuevaOferta) {
-		List<Oferta> ofertas = cargarOfertas();
+	public void agregarOferta(Oferta nuevaOferta) {
+		ArrayList<Oferta> ofertas = cargarOfertas();
 		ofertas.add(nuevaOferta);
 
 		try (Writer writer = new FileWriter(ARCHIVO_JSON)) {
@@ -53,10 +53,10 @@ public class GestorDeArchivos {
 	/**
 	 * Carga las ofertas al iniciar la aplicacion
 	 */
-	public List <Oferta> cargarOfertas() {
+	public ArrayList <Oferta> cargarOfertas() {
 		try (Reader reader = new FileReader(ARCHIVO_JSON)) {
 			Type tipoListaOfertas = new TypeToken<List<Oferta>>() {}.getType();
-			List<Oferta> ofertas = gson.fromJson(reader, tipoListaOfertas);
+			ArrayList<Oferta> ofertas = gson.fromJson(reader, tipoListaOfertas);
 
 			if (ofertas == null) {
 				return new ArrayList<>();
