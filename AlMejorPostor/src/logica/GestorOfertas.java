@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import gestionDeArchivos.GestorDeArchivos;
 
@@ -19,6 +20,35 @@ public class GestorOfertas {
 		this.gestorArchivos.inicializarArchivo();
 		this.ofertas = gestorArchivos.cargarOfertas();
 	}
+	
+	
+	/**
+	 * METODO GOLOSO PARA LA ADJUDICACION DE LOS MEJORES HORARIOS
+	 * @return
+	 */
+	public ArrayList<Oferta> adjudicacionGolosa(){
+		ArrayList<Oferta> todasLasOfertas = obtenerOfertas();
+		System.out.println("ANTES Todas las ofertas: " + todasLasOfertas.toString());
+		
+		todasLasOfertas.sort(Comparator.comparing(Oferta::obtenerPrecioPorHora).reversed());
+		
+		System.out.println("Despues todas las ofertas: " + todasLasOfertas.toString());
+		
+		ArrayList <Oferta> ofertasSeleccionadas = new ArrayList<>();
+		
+		int ultimaHoraFin = 0;
+		
+		for(Oferta oferta : todasLasOfertas) {
+			if(oferta.getHoraInicio() >= ultimaHoraFin) {
+				ofertasSeleccionadas.add(oferta);
+				ultimaHoraFin = oferta.getHoraFin();
+			}
+		}
+		
+		return ofertasSeleccionadas;
+	}
+	
+	
 
 	public void agregarOferta(Oferta nuevaOferta) {
 		if(esNuevaOferta(nuevaOferta)) {
@@ -38,8 +68,8 @@ public class GestorOfertas {
 		return esNuevaOferta;	
 	}
 	
-	public ArrayList<Oferta> obtenerOFertas() {
-		return ofertas;
+	public ArrayList<Oferta> obtenerOfertas() {
+		return this.ofertas;
 	}
 	
 	public void eliminarOFerta(Oferta ofertaAEliminar) {
@@ -47,7 +77,10 @@ public class GestorOfertas {
 			gestorArchivos.eliminarOferta(ofertaAEliminar.getNombreOferente());
 		}
 	}
-
+	
+	public void borrarTodo() {
+		gestorArchivos.borrarTodo();
+	}
 
 
 }

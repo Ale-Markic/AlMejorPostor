@@ -43,8 +43,8 @@ public class GestorDeArchivos {
 
 		try (Writer writer = new FileWriter(ARCHIVO_JSON)) {
 			gson.toJson(ofertas, writer);
-			System.out.println("Oferta agregada exitosamente.");
-			System.out.println("Acá deberia aparecer un mensaje en pantalla que diga que la oferta se creó");
+			//System.out.println("Oferta agregada exitosamente.");
+			//System.out.println("Acá deberia aparecer un mensaje en pantalla que diga que la oferta se creó");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -104,6 +104,15 @@ public class GestorDeArchivos {
 	        e.printStackTrace();
 	    }
 		
+	}
+	
+	public void borrarTodo() {
+		try (Writer writer = new FileWriter(ARCHIVO_JSON)) {
+	        writer.write("[]");  // Se sobrescribe el archivo con un array JSON vacío
+	        System.out.println("Todos los datos han sido borrados del archivo JSON.");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 }

@@ -18,20 +18,7 @@ public class Oferta {
 	
 	
 	
-	
-	/**
-	 * METODO GOLOSO PARA LA ADJUDICACION DE LOS HORARIOS
-	 * @return
-	 */
-	public BigDecimal obtenerAdjudicacionGolosamente() {
-		return metodoGolosoDeAdjudicacion();
-	}
-
-	private BigDecimal metodoGolosoDeAdjudicacion() {
-		return obtenerPrecioPorHora();
-	}
-
-	private BigDecimal obtenerPrecioPorHora() {
+	public BigDecimal obtenerPrecioPorHora() {
 		double precioPorHora = getMonto()/obtenerDuracion();
 		
 		return BigDecimal.valueOf(precioPorHora);
