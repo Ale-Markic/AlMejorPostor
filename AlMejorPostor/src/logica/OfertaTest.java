@@ -1,6 +1,7 @@
 package logica;
 
-import static org.junit.Assert.assertNotNull;
+//import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class OfertaTest {
@@ -79,4 +80,13 @@ public class OfertaTest {
 		
 		assertNotNull("la oferta se creó exitosamente", oferta);	
 	}
+	
+	
+	@Test
+	public void obtenerLaDuracionFuncionaBien() {
+		Oferta oferta = new Oferta ("Matias", 3, 17, 50000);
+		
+		assertEquals(14,oferta.obtenerDuracion());
+	}
+	
 }

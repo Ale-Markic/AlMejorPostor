@@ -86,6 +86,8 @@ public class GestorDeArchivos {
 	/**
 	 * Metodo para eliminar las ofertas de una persona.
 	 * 
+	 * este se podria usar en un boton de eliminar TODAS las ofertas
+	 * 
 	 * ES IMPORTANTE REMARCAR QUE SE ELIMINAN TODAS LAS OFERTAS QUE ESTAN ASOCIADAS AL NOMBRE QUE SE PASA POR PARAMETRO
 	 * @param nombreOferente
 	 */
