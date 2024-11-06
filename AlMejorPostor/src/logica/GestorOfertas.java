@@ -29,7 +29,7 @@ public class GestorOfertas {
 	 */
 	public ArrayList<Oferta> adjudicacionPolinomica(){
 		ArrayList<Oferta> ofertas = gestorArchivos.cargarOfertas();
-		return AdjudicacionPolinomial.floydWarshall(ofertas);
+		return AdjudicacionPolinomial.obtenerMejoresOfertas(ofertas);
 	}
 	
 	/**
