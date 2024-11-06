@@ -18,6 +18,8 @@ public class GestorDeArchivos {
 	public GestorDeArchivos() {
 		this.gson = new GsonBuilder().setPrettyPrinting().create();
 	}
+	
+	///AlMejorPostor/ofertas.json
 
 	/*
 	 *  Método para crear o inicializar el archivo JSON vacío si no existe
