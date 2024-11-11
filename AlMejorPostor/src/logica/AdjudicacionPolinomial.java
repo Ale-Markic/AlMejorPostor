@@ -25,6 +25,7 @@ public class AdjudicacionPolinomial {
 	    return mejoresOfertas;
 	}
 	
+	
 	public static void inicializarMatrices(ArrayList<Oferta> ofertas, int[][] matrizGanancia, int[][] matrizRastreo) {
 	    int n = ofertas.size();
 	    for (int i = 0; i < n; i++) {
@@ -33,7 +34,7 @@ public class AdjudicacionPolinomial {
 	                matrizGanancia[i][j] = ofertas.get(i).getMonto();
 	                matrizRastreo[i][j] = -1;
 	            } else if (ofertas.get(i).getHoraFin() <= ofertas.get(j).getHoraInicio()) {
-	                matrizGanancia[i][j] = ofertas.get(j).getMonto();
+	                matrizGanancia[i][j] = ofertas.get(j).getMonto() + ofertas.get(i).getMonto();
 	                matrizRastreo[i][j] = i;
 	            } else {
 	                matrizGanancia[i][j] = 0;
@@ -44,6 +45,8 @@ public class AdjudicacionPolinomial {
 	}
 
 	
+	
+	
 	public static void aplicarFloydWarshall(ArrayList<Oferta> ofertas, int[][] matrizGanancia, int[][] matrizRastreo) {
 	    int n = ofertas.size();
 	    for (int k = 0; k < n; k++) {
@@ -52,7 +55,8 @@ public class AdjudicacionPolinomial {
 	                if (matrizGanancia[i][k] != 0 && matrizGanancia[k][j] != 0 
 	                        && ofertas.get(i).getHoraFin() <= ofertas.get(k).getHoraInicio()
 	                        && ofertas.get(k).getHoraFin() <= ofertas.get(j).getHoraInicio()) {
-	                    int nuevaGanancia = matrizGanancia[i][k] + matrizGanancia[k][j];
+	                	
+	                    int nuevaGanancia = matrizGanancia[i][k] + ofertas.get(j).getMonto();
 	                    if (nuevaGanancia > matrizGanancia[i][j]) {
 	                        matrizGanancia[i][j] = nuevaGanancia;
 	                        matrizRastreo[i][j] = k;
@@ -102,6 +106,22 @@ public class AdjudicacionPolinomial {
 	    for (int i = caminoInverso.size() - 1; i >= 0; i--) {
 	        mejoresOfertas.add(caminoInverso.get(i));
 	    }
+	}
+	
+	
+	public static void mostrarArreglo(int ar[]) { //muestra un arreglo
+		System.out.print("[ ");
+		for (int i = 0; i < ar.length -1; i++ ) {
+			System.out.print(ar[i] + " , ");
+		}
+		System.out.println(ar [ar.length - 1] + " ]");
+	}
+	
+	public static void mostrarMatriz(int mat[][]) { 
+		
+		for(int i = 0; i < mat.length; i++) {
+			mostrarArreglo(mat[i]);
+		}
 	}
 
 

@@ -1,15 +1,18 @@
 package logica;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Oferta {
 	private String nombreOferente;
 	private int horaInicio, horaFin;
 	private int monto;
+	private Date fecha;
 
 
-	public Oferta(String nombreOferente, int horaInicio, int horaFin, int monto) {
+	public Oferta(Date fecha, String nombreOferente, int horaInicio, int horaFin, int monto) {
 		chequearLegalidadDeOferta(nombreOferente, horaInicio, horaFin, monto);
+		this.fecha = fecha;
 		this.monto = monto;
 		this.nombreOferente = nombreOferente;
 		this.horaFin = horaFin;
@@ -134,5 +137,13 @@ public class Oferta {
 
 	public void setMonto(int monto) {
 		this.monto = monto;
+	}
+	
+	public int getFecha() {
+		return this.fecha.getDate();
+	}
+	
+	public String getNombre() {
+		return this.nombreOferente;
 	}
 }

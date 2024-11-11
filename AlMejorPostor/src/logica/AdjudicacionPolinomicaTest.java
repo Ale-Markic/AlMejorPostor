@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdjudicacionPolinomicaTest {
+	private Date fecha = new Date();
 
 	@Test
 	public void noOfertasDevuelveError() {
@@ -21,8 +23,8 @@ public class AdjudicacionPolinomicaTest {
 	public void testFloydWarshall_OfertasSinSuperposicion() {
 		ArrayList<Oferta> ofertas = new ArrayList<>();
 
-		Oferta oferta1 = new Oferta("Lebron",1,5,100);
-		Oferta oferta2 = new Oferta("James",6,10,200);
+		Oferta oferta1 = new Oferta(fecha,"Lebron",1,5,100);
+		Oferta oferta2 = new Oferta(fecha,"James",6,10,200);
 
 		ofertas.add(oferta1);
 		ofertas.add(oferta2);
@@ -35,8 +37,8 @@ public class AdjudicacionPolinomicaTest {
 	public void testFloydWarshall_OfertasConSuperposicion() {
 		ArrayList<Oferta> ofertas = new ArrayList<>();
 
-		Oferta oferta1 = new Oferta("Stephen",1,5,100);
-		Oferta oferta2 = new Oferta("Curry",4,10,200);
+		Oferta oferta1 = new Oferta(fecha, "Stephen",1,5,100);
+		Oferta oferta2 = new Oferta(fecha, "Curry",4,10,200);
 
 		ofertas.add(oferta1);
 		ofertas.add(oferta2);
@@ -45,6 +47,7 @@ public class AdjudicacionPolinomicaTest {
 		assertTrue(resultado.size() == 1, "Debería seleccionar solo una oferta al haber superposición");
 	}
 
+	/*
 	@Test
 	public void testInicializarMatrices() {
 		ArrayList<Oferta> ofertas = new ArrayList<>();
@@ -65,33 +68,77 @@ public class AdjudicacionPolinomicaTest {
 		assertEquals(0, matrizRastreo[0][1]);
 		assertEquals(1, matrizRastreo[1][2]);
 	}
+	*/
+	@Test
+	public void testInicializarMatrices() {
+	    // Crear algunas ofertas para probar
+	    ArrayList<Oferta> ofertas = new ArrayList<>();
+	    ofertas.add(new Oferta(fecha, "Max", 10, 12, 100)); 
+		ofertas.add(new Oferta(fecha, "Verstappen",12, 14, 120));
+		ofertas.add(new Oferta(fecha, "Kobe",14, 16, 80));
+
+	    // Inicializar matrices
+	    int n = ofertas.size();
+	    int[][] matrizGanancia = new int[n][n];
+	    int[][] matrizRastreo = new int[n][n];
+
+	    AdjudicacionPolinomial.inicializarMatrices(ofertas, matrizGanancia, matrizRastreo);
+
+	    // Verificar las condiciones de la matriz de ganancia y de rastreo
+
+	    // Caso de i == j (cada oferta consigo misma)
+	    assertEquals(100, matrizGanancia[0][0]);
+	    assertEquals(-1, matrizRastreo[0][0]);
+
+	    assertEquals(150, matrizGanancia[1][1]);
+	    assertEquals(-1, matrizRastreo[1][1]);
+
+	    assertEquals(200, matrizGanancia[2][2]);
+	    assertEquals(-1, matrizRastreo[2][2]);
+
+	    assertEquals(50, matrizGanancia[3][3]);
+	    assertEquals(-1, matrizRastreo[3][3]);
+
+	    // Caso de ofertas no superpuestas (horarios consecutivos)
+	    assertEquals(250, matrizGanancia[0][1]);  // Oferta 1 -> Oferta 2: 100 + 150
+	    assertEquals(0, matrizGanancia[1][3]);    // Oferta 2 -> Oferta 4: deben superponerse, ganancia 0
+	    assertEquals(0, matrizGanancia[3][2]);    // Oferta 4 -> Oferta 3: deben superponerse, ganancia 0
+	    assertEquals(350, matrizGanancia[0][2]);  // Oferta 1 -> Oferta 3: 100 + 200
+
+	    // Verificar la matriz de rastreo para estos casos
+	    assertEquals(0, matrizRastreo[0][1]);  // Oferta 1 -> Oferta 2
+	    assertEquals(-1, matrizRastreo[1][3]); // Oferta 2 -> Oferta 4 (se superponen)
+	    assertEquals(-1, matrizRastreo[3][2]); // Oferta 4 -> Oferta 3 (se superponen)
+	    assertEquals(0, matrizRastreo[0][2]);  // Oferta 1 -> Oferta 3
+	}
 	
 	@Test
 	public void testAplicarFloydWarshall() {
 	    ArrayList<Oferta> ofertas = new ArrayList<>();
-	    ofertas.add(new Oferta("Novak", 8, 10, 100)); // Oferta 1
-	    ofertas.add(new Oferta("Rafa", 12, 14, 120)); // Oferta 2
-	    ofertas.add(new Oferta("Roger", 14, 16, 80));  // Oferta 3
+	    ofertas.add(new Oferta(fecha, "Novak", 1, 3, 10)); 
+	    ofertas.add(new Oferta(fecha, "Rafa", 4, 6, 20)); 
+	    ofertas.add(new Oferta(fecha, "Roger", 5, 7, 15));  
 
-	    // Inicializar matrices
+
 	    int[][] matrizGanancia = new int[3][3];
 	    int[][] matrizRastreo = new int[3][3];
 	    
 	    AdjudicacionPolinomial.inicializarMatrices(ofertas, matrizGanancia, matrizRastreo);
 	    AdjudicacionPolinomial.aplicarFloydWarshall(ofertas, matrizGanancia, matrizRastreo);
 	    
-	    // Verificar la matriz de ganancia después de aplicar Floyd-Warshall
-	    assertEquals(200, matrizGanancia[0][2]);  // Comprobando la ganancia total entre la oferta 1 y la 3
-	    assertEquals(120, matrizGanancia[0][1]);  // Ganancia entre la oferta 1 y la 2
-	    assertEquals(80, matrizGanancia[1][2]);   // Ganancia entre la oferta 2 y la 3
+	    
+	    
+	    assertEquals(25, matrizGanancia[0][2]);  
+	    assertEquals(30, matrizGanancia[0][1]); 
+	    assertEquals(0, matrizGanancia[1][2]);   
 	}
 	
 	@Test
 	public void testEncontrarMaxGanancia() {
 	    ArrayList<Oferta> ofertas = new ArrayList<>();
-	    ofertas.add(new Oferta("Novak", 10, 12, 100)); 
-	    ofertas.add(new Oferta("Rafa",12, 14, 120));
-	    ofertas.add(new Oferta("Roger",14, 16, 80));
+	    ofertas.add(new Oferta(fecha, "Novak", 10, 12, 100)); 
+	    ofertas.add(new Oferta(fecha, "Rafa",12, 14, 120));
+	    ofertas.add(new Oferta(fecha, "Roger",14, 16, 80));
 
 	    int[][] matrizGanancia = new int[3][3];
 	    int[][] matrizRastreo = new int[3][3];
@@ -100,9 +147,8 @@ public class AdjudicacionPolinomicaTest {
 	    AdjudicacionPolinomial.aplicarFloydWarshall(ofertas, matrizGanancia, matrizRastreo);
 
 	    
-	    int[] resultado = AdjudicacionPolinomial.encontrarMaxGanancia(matrizGanancia);
-	    
-	    // Verificar que la ganancia máxima se haya encontrado correctamente
+	    int[] resultado = AdjudicacionPolinomial.encontrarMaxGanancia(matrizGanancia);	    
+
 	    assertEquals(0, resultado[0]);
 	    assertEquals(1, resultado[1]);
 	    assertEquals(220, resultado[2]);
@@ -112,9 +158,9 @@ public class AdjudicacionPolinomicaTest {
 	@Test
 	public void testReconstruirCamino() {
 	    ArrayList<Oferta> ofertas = new ArrayList<>();
-	    ofertas.add(new Oferta("Alejandro", 10, 12, 100)); 
-	    ofertas.add(new Oferta("Gaston", 12, 14, 120));
-	    ofertas.add(new Oferta("Esteban", 14, 16, 80));
+	    ofertas.add(new Oferta(fecha, "Alejandro", 10, 12, 100)); 
+	    ofertas.add(new Oferta(fecha, "Gaston", 12, 14, 120));
+	    ofertas.add(new Oferta(fecha, "Esteban", 14, 16, 80));
 	    
 	    int[][] matrizRastreo = {
 	        {-1, 0, 1},

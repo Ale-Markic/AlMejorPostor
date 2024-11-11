@@ -3,6 +3,7 @@ package logica;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 import gestionDeArchivos.GestorDeArchivos;
 
@@ -21,8 +22,8 @@ public class GestorOfertas {
 		this.gestorArchivos.inicializarArchivo();
 		this.ofertas = gestorArchivos.cargarOfertas();
 	}
-	
-	
+
+
 	/**
 	 * Metodo que se utiliza para adjudicar polinomialmente las mejores ofertas.
 	 * @return
@@ -31,7 +32,7 @@ public class GestorOfertas {
 		ArrayList<Oferta> ofertas = gestorArchivos.cargarOfertas();
 		return AdjudicacionPolinomial.obtenerMejoresOfertas(ofertas);
 	}
-	
+
 	/**
 	 * METODO GOLOSO PARA LA ADJUDICACION DE LOS MEJORES HORARIOS
 	 * @return
@@ -39,58 +40,75 @@ public class GestorOfertas {
 	public ArrayList<Oferta> adjudicacionGolosa(){
 		ArrayList<Oferta> todasLasOfertas = obtenerOfertas();
 		System.out.println("ANTES Todas las ofertas: " + todasLasOfertas.toString());
-		
+
 		todasLasOfertas.sort(Comparator.comparing(Oferta::obtenerPrecioPorHora).reversed());
-		
+
 		System.out.println("Despues todas las ofertas: " + todasLasOfertas.toString());
-		
+
 		ArrayList <Oferta> ofertasSeleccionadas = new ArrayList<>();
-		
+
 		int ultimaHoraFin = 0;
-		
+
 		for(Oferta oferta : todasLasOfertas) {
 			if(oferta.getHoraInicio() >= ultimaHoraFin) {
 				ofertasSeleccionadas.add(oferta);
 				ultimaHoraFin = oferta.getHoraFin();
 			}
 		}
-		
+
 		return ofertasSeleccionadas;
 	}
-	
-	
+
+
 
 	public void agregarOferta(Oferta nuevaOferta) {
 		if(esNuevaOferta(nuevaOferta)) {
 			gestorArchivos.agregarOferta(nuevaOferta);
 		}
 	}
-	
+
 	private boolean esNuevaOferta(Oferta nuevaOferta) {
 		boolean esNuevaOferta = true;
-		
+
 		for(Oferta oferta : ofertas){
 			if(oferta.equals(nuevaOferta)) {
 				esNuevaOferta = false;
 			}
 		}
-		
+
 		return esNuevaOferta;	
 	}
-	
+
 	public ArrayList<Oferta> obtenerOfertas() {
 		return this.ofertas;
 	}
-	
+
 	public void eliminarOFerta(Oferta ofertaAEliminar) {
 		if(ofertas.contains(ofertaAEliminar)) {
 			gestorArchivos.eliminarOferta(ofertaAEliminar.getNombreOferente());
 		}
 	}
-	
+
 	public void borrarTodo() {
 		gestorArchivos.borrarTodo();
 	}
 
+	public ArrayList<Oferta> obtenerOfertasDeEstaFecha(Date fecha){
+		ArrayList<Oferta> retorno = new ArrayList<>();
 
+		if(this.ofertas == null) {
+			return retorno;
+		}
+		
+		return buscarOfertas(fecha, retorno);
+	}
+	
+	private ArrayList<Oferta> buscarOfertas(Date fecha, ArrayList<Oferta> retorno){
+		for(Oferta oferta : ofertas) {
+			if(fecha.getDay() == oferta.getFecha()) {
+				retorno.add(oferta);
+			}
+		}
+		return retorno;
+	}
 }
