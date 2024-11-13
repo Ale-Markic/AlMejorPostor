@@ -98,7 +98,6 @@ public class GestorOfertas {
 		if(this.ofertas == null) {
 			return retorno;
 		}
-		
 		return buscarOfertas(fecha, retorno);
 	}
 	

@@ -1,8 +1,7 @@
 package main;
 
-//import gestionDeArchivos.GestorDeArchivos;
+
 import logica.GestorOfertas;
-import logica.Oferta;
 import vista.ControladorEventos;
 import vista.InterfazPrincipal;
 
