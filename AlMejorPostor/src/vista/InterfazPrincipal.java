@@ -160,7 +160,7 @@ public class InterfazPrincipal {
 	
 	private void mostrarMensajeBienvenida() {
 		String mensaje = "BIENVENIDO! \nAntes de empezar por favor tener en cuenta las siguientes consideraciones: \n"
-				+ "Funcionamiento: \nPara cargar una oferta debe seleccionar la fecha que desee en el calendario y el sistema solo se encargará de "
+				+ "Funcionamiento: \nPara cargar una oferta debe seleccionar la fecha que desee en el calendario, cargar los datos necesarios y luego presionar el boton 'agregar oferta' \n y el sistema solo se encargará de "
 				+ "adjudicar la oferta a ese día. \nLuego, si usted quiere visualizar las ofertas existentes de un dia en especifico, lo unico que "
 				+ "debe hacer es hacer click en el dia que quiera y luego apretar el boton de mostrarOferta, \nel sistema solo mostrará las ofertas de ese día. \n"
 				+ "Por ultimo, si usted quiere ver la mejor adjudicacion de oferta de ese día en especifico, simplemente debe hacer click en el calendario sobre el dia \n"
