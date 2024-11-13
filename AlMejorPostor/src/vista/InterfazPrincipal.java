@@ -44,7 +44,7 @@ public class InterfazPrincipal {
 		mostrarMensajeBienvenida();
 
 
-		JPanel panelFormulario = new JPanel(new GridLayout(5, 2));
+		JPanel panelFormulario = new JPanel(new GridLayout(0, 2));
 		configurarPanelFormulario(panelFormulario);
 
 
@@ -60,6 +60,9 @@ public class InterfazPrincipal {
 			Date selectedDate = calendar.getDate();
 		});
 		
+		btnAgregar = new JButton("Agregar Oferta");
+		panelFormulario.add(btnAgregar);
+		
 		btnMostrarOfertas = new JButton("Mostrar Ofertas");
 		panelFormulario.add(btnMostrarOfertas);
 
@@ -72,14 +75,12 @@ public class InterfazPrincipal {
 	}
 
 	public void capturarFecha() {
-
-		SimpleDateFormat particion = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat particion = new SimpleDateFormat("DD/MM/YYYY");
 		String fechasParticionada = particion.format(calendar.getDate());
 		this.fechaSeleccionada=  fechasParticionada;
-
 	}
+	
 	public void accionFechaSeleccionada(PropertyChangeListener listener) {
-
 		calendar.getDayChooser().addPropertyChangeListener("day", listener);
 	}
 
@@ -193,9 +194,6 @@ public class InterfazPrincipal {
 		panelFormulario.add(new JLabel("Monto:"));
 		txtMonto = new JTextField();
 		panelFormulario.add(txtMonto);
-
-		btnAgregar = new JButton("Agregar Oferta");
-		panelFormulario.add(btnAgregar);
 	}
 
 	private void configurarOfertasPanel(JPanel ofertasPanel) {

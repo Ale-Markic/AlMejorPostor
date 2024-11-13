@@ -25,20 +25,38 @@ public class ControladorEventos {
 	}
 
 	class AgregarOfertaListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(!esOfertaValida()) {
+				return;
+			}
 			
 			Oferta ofertaObtenida= new Oferta(vista.ObtenerFechaSeleccionada(),vista.ObtenerNombre(),Integer.valueOf(vista.ObtenerHoraInicio()),Integer.valueOf(vista.ObtenerHoraFin()),Integer.valueOf(vista.ObtenerMonto()));
-
+			
+			/*
+			if(gestorOferta.ingresaronDatosErroneos(ofertaObtenida)) {
+				vista.mostrarMensaje(mensajeDatosErroneos());
+			}
+			*/
+			
 			if(gestorOferta.esNuevaOferta(ofertaObtenida)) {
-
 				gestorOferta.agregarOferta(ofertaObtenida);
 
-				AgregarListadoDeOfertasEnVista(gestorOferta.obtenerOfertas());
+				mostrarNuevaOfertaAgregada(ofertaObtenida.getFecha(),gestorOferta.obtenerOfertas());
 				vista.mostrarMensaje("Oferta cargada exitosamente");
+				vista.limpiarFormulario();
 			}
 		}
+	}
+	private boolean esOfertaValida() {
+		try {
+			Oferta ofertaObtenida= new Oferta(vista.ObtenerFechaSeleccionada(),vista.ObtenerNombre(),Integer.valueOf(vista.ObtenerHoraInicio()),Integer.valueOf(vista.ObtenerHoraFin()),Integer.valueOf(vista.ObtenerMonto()));
+		}
+		catch(Exception e){
+			vista.mostrarMensaje(mensajeDatosErroneos());
+			return false;
+		}
+		return true;
 	}
 
 	class MostrarOfertasListener implements ActionListener {
@@ -68,11 +86,29 @@ public class ControladorEventos {
 		}
 	}
 
-	private void AgregarListadoDeOfertasEnVista(ArrayList<Oferta> listadoOFerta) {
+	private void AgregarListadoDeOfertasEnVista( ArrayList<Oferta> listadoOFerta) {
 		vista.limPiarTabla();
 
 		for (Oferta ofertas : listadoOFerta) {
 			vista.IngresarOfertasEnTabla( ofertas.getNombreOferente(), ofertas.getHoraInicio(), ofertas.getHoraFin(),ofertas.getMonto());
 		}
+	}
+	
+	private void mostrarNuevaOfertaAgregada(String fecha, ArrayList<Oferta> ofertas) {
+		vista.limPiarTabla();
+		for(Oferta oferta: ofertas) {
+			if(oferta.getFecha().equals(fecha)) {
+				vista.IngresarOfertasEnTabla(oferta.getNombreOferente(), oferta.getHoraInicio(), oferta.getHoraFin(), oferta.getMonto());
+			}
+		}
+	}
+	
+	private String mensajeDatosErroneos() {
+		String mensaje = "Usted ha ingresado datos erroneos, por favor volver a verificar los datos que ingresó\n"
+				+ "RECORDATORIO: \n"
+				+ "NOMBRE -> debe ingresar texto\n"
+				+ "HORA INICIO Y HORA FIN -> debe ingresar numeros validos (hora de inicio mayor a cero y hora fin menor a 24)\n"
+				+ "MONTO -> Debe ingresar un monto mayor a 0";
+		return mensaje;
 	}
 }

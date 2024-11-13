@@ -47,6 +47,7 @@ public class Oferta {
 			throw new RuntimeException("Por favor ingrese un nombre");
 		}
 	}
+	
 	private void chequeoHorarios(int horaInicio, int horaFin) {
 		if(horaInicio == horaFin) {
 			throw new RuntimeException("los horarios no pueden ser iguales");
@@ -70,6 +71,18 @@ public class Oferta {
 		if(monto == 0) {
 			throw new RuntimeException("El monto ingresado no puede ser 0, necesitamos ganancia!!");
 		}
+	}
+	
+	public boolean datosValidos() {
+		try{
+			chequearLegalidadDeOferta(this.nombreOferente, this.horaInicio, this.horaFin, this.monto);
+		}
+		catch(Exception e){
+			System.out.println("Pasé por acá");
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override

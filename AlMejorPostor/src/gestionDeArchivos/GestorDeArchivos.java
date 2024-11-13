@@ -19,7 +19,6 @@ public class GestorDeArchivos {
 		this.gson = new GsonBuilder().setPrettyPrinting().create();
 	}
 	
-	///AlMejorPostor/ofertas.json
 
 	/*
 	 *  Método para crear o inicializar el archivo JSON vacío si no existe
@@ -28,7 +27,7 @@ public class GestorDeArchivos {
 		File archivo = new File(ARCHIVO_JSON);
 		if (!archivo.exists()) {
 			try (FileWriter writer = new FileWriter(archivo)) {
-				writer.write("[]");  // Crear archivo con un array JSON vacío
+				writer.write("[]");  
 				System.out.println("Archivo JSON creado.");
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -45,8 +44,6 @@ public class GestorDeArchivos {
 
 		try (Writer writer = new FileWriter(ARCHIVO_JSON)) {
 			gson.toJson(ofertas, writer);
-			//System.out.println("Oferta agregada exitosamente.");
-			//System.out.println("Acá deberia aparecer un mensaje en pantalla que diga que la oferta se creó");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -77,8 +74,7 @@ public class GestorDeArchivos {
 		List<Oferta> ofertas = cargarOfertas();
 
 		if(ofertas.isEmpty()) {
-			System.out.println("No hay ofertas registradas");
-			System.out.println("acá me gustaria que aparezca un mensaje en la pantalla que diga que no hay ofertas");
+			
 		}else {
 			String jsonFormateado = gson.toJson(ofertas);
 			System.out.println(jsonFormateado);
@@ -87,8 +83,7 @@ public class GestorDeArchivos {
 	
 	/**
 	 * Metodo para eliminar las ofertas de una persona.
-	 * 
-	 * este se podria usar en un boton de eliminar TODAS las ofertas
+	 *
 	 * 
 	 * ES IMPORTANTE REMARCAR QUE SE ELIMINAN TODAS LAS OFERTAS QUE ESTAN ASOCIADAS AL NOMBRE QUE SE PASA POR PARAMETRO
 	 * @param nombreOferente
@@ -98,7 +93,6 @@ public class GestorDeArchivos {
 		
 		ofertas.removeIf(oferta -> oferta.getNombreOferente().equals(nombreOferente));
 		
-		// Guardamos la lista actualizada en el archivo JSON
 	    try (Writer writer = new FileWriter(ARCHIVO_JSON)) {
 	        gson.toJson(ofertas, writer);
 	        System.out.println("Oferta eliminada exitosamente.");
@@ -110,7 +104,7 @@ public class GestorDeArchivos {
 	
 	public void borrarTodo() {
 		try (Writer writer = new FileWriter(ARCHIVO_JSON)) {
-	        writer.write("[]");  // Se sobrescribe el archivo con un array JSON vacío
+	        writer.write("[]");  
 	        System.out.println("Todos los datos han sido borrados del archivo JSON.");
 	    } catch (IOException e) {
 	        e.printStackTrace();
