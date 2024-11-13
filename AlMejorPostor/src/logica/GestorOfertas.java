@@ -37,8 +37,9 @@ public class GestorOfertas {
 	 * METODO GOLOSO PARA LA ADJUDICACION DE LOS MEJORES HORARIOS
 	 * @return
 	 */
-	public ArrayList<Oferta> adjudicacionGolosa(){
-		ArrayList<Oferta> todasLasOfertas = obtenerOfertas();
+	public ArrayList<Oferta> adjudicacionGolosa(String fecha){
+		
+		ArrayList<Oferta> todasLasOfertas = obtenerOfertasDeEstaFecha(fecha);
 		todasLasOfertas.sort(Comparator.comparing(Oferta::obtenerPrecioPorHora).reversed());
 		
 		ArrayList <Oferta> ofertasSeleccionadas = new ArrayList<>();
@@ -76,7 +77,7 @@ public class GestorOfertas {
 		}
 	}
 
-	private boolean esNuevaOferta(Oferta nuevaOferta) {
+	public boolean esNuevaOferta(Oferta nuevaOferta) {
 		boolean esNuevaOferta = true;
 
 		for(Oferta oferta : ofertas){

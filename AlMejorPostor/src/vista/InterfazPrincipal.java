@@ -1,18 +1,16 @@
 package vista;
 
-import logica.Oferta;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JCalendar;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Date;
-import controlador.ControladorSalaEnsayo;
-import gestionDeArchivos.GestorDeArchivos;
+
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 
 public class InterfazPrincipal {
-
 	private JFrame frame;
 	private JCalendar calendar;
 	private JTextField txtNombre;
@@ -24,13 +22,12 @@ public class InterfazPrincipal {
 	private JButton btnAgregar;
 	private JButton btnMostrarOfertas;
 	private JButton btnResolverAdjudicacion;
-	//    private ControladorSalaEnsayo controlador;  // Controlador declarado aquí
+	private String fechaSeleccionada;
 
-	// Método main agregado nuevamente
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				InterfazPrincipal window = new InterfazPrincipal(); // Inicializamos sin parámetros
+				InterfazPrincipal window = new InterfazPrincipal();
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -39,50 +36,54 @@ public class InterfazPrincipal {
 	}
 
 	public InterfazPrincipal() {
-		initialize(); // Inicializa la vista
-		GestorDeArchivos gestorDeArchivos = new GestorDeArchivos(); // Crear el gestor de archivos aquí
-
-		// Inicializar el controlador ANTES de cualquier otra llamada que lo utilice
-		//controlador = new InterfazPrincipal(this, gestorDeArchivos); // Inicializa el controlador con el gestor
-
-		configurarListeners(); // Configura los listeners después de que todo esté inicializado
-		actualizarTablaConOfertas(calendar.getDate());  // Carga las ofertas del día actual aquí, después de inicializar el controlador
+		initialize();
 	}
 
 	private void initialize() {
 		inicializarFrame();
-		
-		
+		mostrarMensajeBienvenida();
+
+
 		JPanel panelFormulario = new JPanel(new GridLayout(5, 2));
 		configurarPanelFormulario(panelFormulario);
-		
+
 
 		JPanel ofertasPanel = new JPanel(new BorderLayout());
 		configurarOfertasPanel(ofertasPanel);
-		
+
 
 		calendar = new JCalendar();
 		ofertasPanel.add(calendar, BorderLayout.WEST);
 
-		// Listener para el calendario
+	
 		calendar.getDayChooser().addPropertyChangeListener("day", evt -> {
 			Date selectedDate = calendar.getDate();
-			actualizarTablaConOfertas(selectedDate);  // Esto solo funciona si el controlador ya está inicializado
 		});
-
-		btnAgregar.addActionListener(e -> agregarOferta());
-
-		// Botón "Mostrar Ofertas"
+		
 		btnMostrarOfertas = new JButton("Mostrar Ofertas");
 		panelFormulario.add(btnMostrarOfertas);
 
-		// Botón "Resolver Adjudicación"
 		btnResolverAdjudicacion = new JButton("Resolver Adjudicación");
 		panelFormulario.add(btnResolverAdjudicacion);
 
 		frame.getContentPane().add(ofertasPanel, BorderLayout.CENTER);
+
+		capturarFecha();
 	}
 
+	public void capturarFecha() {
+
+		SimpleDateFormat particion = new SimpleDateFormat("dd/MM/yyyy");
+		String fechasParticionada = particion.format(calendar.getDate());
+		this.fechaSeleccionada=  fechasParticionada;
+
+	}
+	public void accionFechaSeleccionada(PropertyChangeListener listener) {
+
+		calendar.getDayChooser().addPropertyChangeListener("day", listener);
+	}
+
+	/*
 	private void agregarOferta() {
 		try {
 			String nombre = txtNombre.getText();
@@ -90,13 +91,14 @@ public class InterfazPrincipal {
 			int horaFin = Integer.parseInt(txtHoraFin.getText());
 			double monto = Double.parseDouble(txtMonto.getText());
 
-			//controlador.agregarOferta(nombre, horaInicio, horaFin, monto); 
+
 			JOptionPane.showMessageDialog(frame, "Oferta agregada exitosamente");
 			limpiarFormulario();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(frame, "Por favor, ingrese valores válidos para las horas y el monto.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
 
 	private void actualizarTablaConOfertas(Date fecha) {
 		modeloTabla.setRowCount(0);  // Limpiar la tabla
@@ -148,12 +150,12 @@ public class InterfazPrincipal {
 	// Método para configurar los listeners
 	private void configurarListeners() {
 		btnAgregar.addActionListener(e -> agregarOferta());
-		// Agregar más listeners si es necesario
+
 	}
 
-	// Método para actualizar la tabla con las ofertas filtradas
+
 	public void actualizarTabla(ArrayList<Oferta> ofertas) {
-		modeloTabla.setRowCount(0); // Limpiar la tabla
+		modeloTabla.setRowCount(0); 
 
 		for (Oferta oferta : ofertas) {
 			Object[] fila = {
@@ -178,14 +180,100 @@ public class InterfazPrincipal {
 		txtHoraFin.setText("");
 		txtMonto.setText("");
 	}
+	 */
+	public String ObtenerNombre() {
+		return txtNombre.getText();
+	}
+
+	public String ObtenerHoraInicio() {
+		return txtHoraInicio.getText();
+	}
+
+	public String ObtenerHoraFin() {
+		return txtHoraFin.getText();
+	}
+
+	public String ObtenerMonto() {
+		return txtMonto.getText();
+	}
+
+	public String ObtenerFechaSeleccionada() {
+		return  this.fechaSeleccionada;
+	}
+
+	public void MostrarFechaSeleccionada(PropertyChangeListener  evento) {
+		calendar.getDayChooser().addPropertyChangeListener("day", evento);
+	}
+
+
+	public void addAgregarOfertaListener(ActionListener listener) {
+		this.btnAgregar.addActionListener(listener);
+	}
+
+	public void addMostrarOfertasListener(ActionListener listener) {
+		this.btnMostrarOfertas.addActionListener(listener);
+	}
+
+	public void addResolverAdjudicacionListener(ActionListener listener) {
+		limPiarTabla();
+		this.btnResolverAdjudicacion.addActionListener(listener);
+	}
+
+	public void limPiarTabla() { 
+		modeloTabla.setRowCount(0);
+	}
+
+	public void RecargarTabla() {
+		this.frame.revalidate();
+	}
+
+	public void IngresarOfertasEnTabla( String nombreOferente, int horaInicio, int horaFin, int monto){
+
+		String [] datos = new String[4];
+		datos[0]=nombreOferente;
+		datos[1]= String.valueOf(horaInicio);
+		datos[2]= String.valueOf(horaFin);
+		datos[3]=String.valueOf(monto);
+
+		modeloTabla.addRow(datos);
+		RecargarTabla();
+	}
+
+	public void mostrarPantalla(){
+		EventQueue.invokeLater(() -> {
+			frame.setVisible(true);
+		});    
+	}
+
+	public void mostrarMensaje(String mensaje) {
+		JOptionPane.showMessageDialog(frame, mensaje);
+	}
+
+	public void limpiarFormulario() {
+		txtNombre.setText("");
+		txtHoraInicio.setText("");
+		txtHoraFin.setText("");
+		txtMonto.setText("");
+	}
 	
+	private void mostrarMensajeBienvenida() {
+		String mensaje = "BIENVENIDO! \nAntes de empezar por favor tener en cuenta las siguientes consideraciones: \n"
+				+ "Funcionamiento: \nPara cargar una oferta debe seleccionar la fecha que desee en el calendario y el sistema solo se encargará de "
+				+ "adjudicar la oferta a ese día. \nLuego, si usted quiere visualizar las ofertas existentes de un dia en especifico, lo unico que "
+				+ "debe hacer es hacer click en el dia que quiera y luego apretar el boton de mostrarOferta, \nel sistema solo mostrará las ofertas de ese día. \n"
+				+ "Por ultimo, si usted quiere ver la mejor adjudicacion de oferta de ese día en especifico, simplemente debe hacer click en el calendario sobre el dia \n"
+				+ "que quiera saber, y el sistema solo filtrará y obtentrá la mejor adjudicacion";
+		//En realidad, no podemos garantizar que es la mejor solucion, ya que esta se obtiene de manera golosa, con una heuristica. Pero el usuario no tiene porque saber eso.
+		mostrarMensaje(mensaje);
+	}
+
 	private void inicializarFrame() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
 	}
-	
+
 	private void configurarPanelFormulario(JPanel panelFormulario) {
 		frame.getContentPane().add(panelFormulario, BorderLayout.NORTH);
 
@@ -195,7 +283,7 @@ public class InterfazPrincipal {
 		panelFormulario.add(new JLabel("Hora Inicio:"));
 		txtHoraInicio = new JTextField();
 		panelFormulario.add(txtHoraInicio);
-		
+
 		panelFormulario.add(new JLabel("Hora Fin:"));
 		txtHoraFin = new JTextField();
 		panelFormulario.add(txtHoraFin);
@@ -207,7 +295,7 @@ public class InterfazPrincipal {
 		btnAgregar = new JButton("Agregar Oferta");
 		panelFormulario.add(btnAgregar);
 	}
-	
+
 	private void configurarOfertasPanel(JPanel ofertasPanel) {
 		String[] columnas = {"Nombre", "Hora Inicio", "Hora Fin", "Monto"};
 		modeloTabla = new DefaultTableModel(columnas, 0);
