@@ -72,18 +72,6 @@ public class Oferta {
 			throw new RuntimeException("El monto ingresado no puede ser 0, necesitamos ganancia!!");
 		}
 	}
-	
-	public boolean datosValidos() {
-		try{
-			chequearLegalidadDeOferta(this.nombreOferente, this.horaInicio, this.horaFin, this.monto);
-		}
-		catch(Exception e){
-			System.out.println("Pasé por acá");
-			return false;
-		}
-		
-		return true;
-	}
 
 	@Override
 	public boolean equals(Object obj) {

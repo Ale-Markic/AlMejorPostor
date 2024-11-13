@@ -33,12 +33,6 @@ public class ControladorEventos {
 			
 			Oferta ofertaObtenida= new Oferta(vista.ObtenerFechaSeleccionada(),vista.ObtenerNombre(),Integer.valueOf(vista.ObtenerHoraInicio()),Integer.valueOf(vista.ObtenerHoraFin()),Integer.valueOf(vista.ObtenerMonto()));
 			
-			/*
-			if(gestorOferta.ingresaronDatosErroneos(ofertaObtenida)) {
-				vista.mostrarMensaje(mensajeDatosErroneos());
-			}
-			*/
-			
 			if(gestorOferta.esNuevaOferta(ofertaObtenida)) {
 				gestorOferta.agregarOferta(ofertaObtenida);
 

@@ -101,10 +101,6 @@ public class GestorOfertas {
 		return buscarOfertas(fecha, retorno);
 	}
 	
-	public boolean ingresaronDatosErroneos(Oferta oferta) {
-		return oferta.datosValidos();
-	}
-	
 	private ArrayList<Oferta> buscarOfertas(String fecha, ArrayList<Oferta> retorno){
 		for(Oferta oferta : ofertas) {
 			if(oferta.getFecha().equals(fecha)) {
