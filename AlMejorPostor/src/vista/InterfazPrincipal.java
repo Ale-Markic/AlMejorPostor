@@ -54,33 +54,12 @@ public class InterfazPrincipal {
 		
 		
 		JPanel panelFormulario = new JPanel(new GridLayout(5, 2));
-		frame.getContentPane().add(panelFormulario, BorderLayout.NORTH);
-
-		panelFormulario.add(new JLabel("Nombre:"));
-		txtNombre = new JTextField();
-		panelFormulario.add(txtNombre);
-
-		panelFormulario.add(new JLabel("Hora Inicio:"));
-		txtHoraInicio = new JTextField();
-		panelFormulario.add(txtHoraInicio);
-
-		panelFormulario.add(new JLabel("Hora Fin:"));
-		txtHoraFin = new JTextField();
-		panelFormulario.add(txtHoraFin);
-
-		panelFormulario.add(new JLabel("Monto:"));
-		txtMonto = new JTextField();
-		panelFormulario.add(txtMonto);
-
-		btnAgregar = new JButton("Agregar Oferta");
-		panelFormulario.add(btnAgregar);
+		configurarPanelFormulario(panelFormulario);
+		
 
 		JPanel ofertasPanel = new JPanel(new BorderLayout());
-		String[] columnas = {"Nombre", "Hora Inicio", "Hora Fin", "Monto"};
-		modeloTabla = new DefaultTableModel(columnas, 0);
-		tablaOfertas = new JTable(modeloTabla);
-		JScrollPane scrollPane = new JScrollPane(tablaOfertas);
-		ofertasPanel.add(scrollPane, BorderLayout.CENTER);
+		configurarOfertasPanel(ofertasPanel);
+		
 
 		calendar = new JCalendar();
 		ofertasPanel.add(calendar, BorderLayout.WEST);
@@ -205,6 +184,35 @@ public class InterfazPrincipal {
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
+	}
+	
+	private void configurarPanelFormulario(JPanel panelFormulario) {
+		frame.getContentPane().add(panelFormulario, BorderLayout.NORTH);
 
+		panelFormulario.add(new JLabel("Nombre:"));
+		txtNombre = new JTextField();
+		panelFormulario.add(txtNombre);
+		panelFormulario.add(new JLabel("Hora Inicio:"));
+		txtHoraInicio = new JTextField();
+		panelFormulario.add(txtHoraInicio);
+		
+		panelFormulario.add(new JLabel("Hora Fin:"));
+		txtHoraFin = new JTextField();
+		panelFormulario.add(txtHoraFin);
+
+		panelFormulario.add(new JLabel("Monto:"));
+		txtMonto = new JTextField();
+		panelFormulario.add(txtMonto);
+
+		btnAgregar = new JButton("Agregar Oferta");
+		panelFormulario.add(btnAgregar);
+	}
+	
+	private void configurarOfertasPanel(JPanel ofertasPanel) {
+		String[] columnas = {"Nombre", "Hora Inicio", "Hora Fin", "Monto"};
+		modeloTabla = new DefaultTableModel(columnas, 0);
+		tablaOfertas = new JTable(modeloTabla);
+		JScrollPane scrollPane = new JScrollPane(tablaOfertas);
+		ofertasPanel.add(scrollPane, BorderLayout.CENTER);
 	}
 }

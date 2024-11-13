@@ -39,24 +39,32 @@ public class GestorOfertas {
 	 */
 	public ArrayList<Oferta> adjudicacionGolosa(){
 		ArrayList<Oferta> todasLasOfertas = obtenerOfertas();
-		System.out.println("ANTES Todas las ofertas: " + todasLasOfertas.toString());
-
 		todasLasOfertas.sort(Comparator.comparing(Oferta::obtenerPrecioPorHora).reversed());
-
-		System.out.println("Despues todas las ofertas: " + todasLasOfertas.toString());
-
+		
 		ArrayList <Oferta> ofertasSeleccionadas = new ArrayList<>();
 
-		int ultimaHoraFin = 0;
-
 		for(Oferta oferta : todasLasOfertas) {
-			if(oferta.getHoraInicio() >= ultimaHoraFin) {
+			if(esOfertaNoSolapada(oferta, ofertasSeleccionadas)) {
 				ofertasSeleccionadas.add(oferta);
-				ultimaHoraFin = oferta.getHoraFin();
 			}
 		}
 
 		return ofertasSeleccionadas;
+	}
+	
+	public boolean esOfertaNoSolapada(Oferta oferta, ArrayList<Oferta> ofertasSeleccionadas) {
+		  if (ofertasSeleccionadas.isEmpty()) {
+	          return true;
+	      }
+		  
+		  for (Oferta ofertaActual : ofertasSeleccionadas) {
+	          if (!(oferta.getHoraFin() <= ofertaActual.getHoraInicio() || 
+	                oferta.getHoraInicio() >= ofertaActual.getHoraFin())) {
+	              return false;
+	          }
+	      }
+	  
+	      return true;
 	}
 
 
@@ -64,6 +72,7 @@ public class GestorOfertas {
 	public void agregarOferta(Oferta nuevaOferta) {
 		if(esNuevaOferta(nuevaOferta)) {
 			gestorArchivos.agregarOferta(nuevaOferta);
+			actualizarArregloDeOfertas();
 		}
 	}
 
@@ -77,6 +86,10 @@ public class GestorOfertas {
 		}
 
 		return esNuevaOferta;	
+	}
+	
+	private void actualizarArregloDeOfertas() {
+		this.ofertas = gestorArchivos.cargarOfertas();
 	}
 
 	public ArrayList<Oferta> obtenerOfertas() {
@@ -93,7 +106,7 @@ public class GestorOfertas {
 		gestorArchivos.borrarTodo();
 	}
 
-	public ArrayList<Oferta> obtenerOfertasDeEstaFecha(Date fecha){
+	public ArrayList<Oferta> obtenerOfertasDeEstaFecha(String fecha){
 		ArrayList<Oferta> retorno = new ArrayList<>();
 
 		if(this.ofertas == null) {
@@ -103,9 +116,9 @@ public class GestorOfertas {
 		return buscarOfertas(fecha, retorno);
 	}
 	
-	private ArrayList<Oferta> buscarOfertas(Date fecha, ArrayList<Oferta> retorno){
+	private ArrayList<Oferta> buscarOfertas(String fecha, ArrayList<Oferta> retorno){
 		for(Oferta oferta : ofertas) {
-			if(fecha.getDay() == oferta.getFecha()) {
+			if(oferta.getFecha().equals(fecha)) {
 				retorno.add(oferta);
 			}
 		}

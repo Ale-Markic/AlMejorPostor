@@ -1,16 +1,15 @@
 package logica;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class Oferta {
 	private String nombreOferente;
 	private int horaInicio, horaFin;
 	private int monto;
-	private Date fecha;
+	private String fecha;
 
 
-	public Oferta(Date fecha, String nombreOferente, int horaInicio, int horaFin, int monto) {
+	public Oferta(String fecha, String nombreOferente, int horaInicio, int horaFin, int monto) {
 		chequearLegalidadDeOferta(nombreOferente, horaInicio, horaFin, monto);
 		this.fecha = fecha;
 		this.monto = monto;
@@ -73,10 +72,6 @@ public class Oferta {
 		}
 	}
 
-	private BigDecimal convertirIntABigDecimal(int monto) {
-		return BigDecimal.valueOf(monto);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null) {
@@ -89,8 +84,8 @@ public class Oferta {
 		boolean igualdad = aux.getNombreOferente() == this.getNombreOferente() 
 				&& aux.getHoraInicio() == this.getHoraInicio() 
 				&& aux.getHoraFin() == this.getHoraFin() 
-				&& aux.getMonto() == this.getMonto();
-
+				&& aux.getMonto() == this.getMonto()
+				&& aux.getFecha() == this.getFecha();
 
 		return igualdad;
 	}
@@ -139,8 +134,8 @@ public class Oferta {
 		this.monto = monto;
 	}
 	
-	public int getFecha() {
-		return this.fecha.getDate();
+	public String getFecha() {
+		return this.fecha;
 	}
 	
 	public String getNombre() {
