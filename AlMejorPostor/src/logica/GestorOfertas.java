@@ -37,6 +37,7 @@ public class GestorOfertas {
 				ofertasSeleccionadas.add(oferta);
 			}
 		}
+		QuickSortOfertas.quickSort(ofertasSeleccionadas, 0, ofertasSeleccionadas.size()-1);
 
 		return ofertasSeleccionadas;
 	}
